@@ -11,8 +11,8 @@ app.config.update(
 	MAIL_SERVER='smtp.gmail.com',
 	MAIL_PORT=465,
 	MAIL_USE_SSL=True,
+    MAIL_PASSWORD = app.config['SENDER_PASSWORD'],
 	MAIL_USERNAME = app.config['SENDER_EMAIL'],
-	MAIL_PASSWORD = app.config['SENDER_PASSWORD']
 )
 mail = Mail(app)
 
@@ -22,7 +22,6 @@ def index():
     if request.method == 'POST':
         if form.validate():
             try: 
-                ##if form validates, send email, return success
                 msg = Message(form.subject.data, sender=MAIL_USERNAME, recipients=[form.to.data])
                 msg.body = form.body.data
                 mail.send(msg)
