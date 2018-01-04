@@ -1,8 +1,20 @@
-from flask import Flask, redirect, render_template, url_for, request
+from flask import Flask, redirect, render_template, url_for, request, flash
 from forms import EmailForm
+from flask_mail import Mail, Message
 import os
 
 app = Flask(__name__)
+app.config['SECRET_KEY'] = os.environ.get('SECRET_KEY')
+app.config['SENDER_EMAIL'] = os.environ.get('SENDER_EMAIL')
+app.config['SENDER_PASSWORD'] = os.environ.get('SENDER_PASSWORD')
+app.config.update(
+	MAIL_SERVER='smtp.gmail.com',
+	MAIL_PORT=465,
+	MAIL_USE_SSL=True,
+	MAIL_USERNAME = app.config['SENDER_EMAIL'],
+	MAIL_PASSWORD = app.config['SENDER_PASSWORD']
+)
+mail = Mail(app)
 
 @app.route('/')
 def root():
@@ -13,8 +25,17 @@ def index():
     form = EmailForm(request.form, csrf_enabled=False)
     if request.method == 'POST':
         if form.validate():
-            flash('Your email message has been sent!')
-            return redirect(url_for('index'))
+            try: 
+                to = request.form['to']
+                subject = request.form['subject']
+                body = request.form['body']
+                msg = Message(subject, sender=app.config['SENDER_EMAIL'], recipients=[to])
+                msg.body = body
+                mail.send(msg)
+                flash('Your email message has been sent!')
+                return redirect(url_for('index'))
+            except Exception as inst:
+                return(str(inst))
 
     return render_template('index.html', form=form)
 
