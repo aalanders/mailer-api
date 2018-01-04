@@ -1,4 +1,4 @@
-from flask import Flask, redirect, render_template, url_for, request, flash
+from flask import Flask, redirect, render_template, url_for, request, flash, jsonify
 from forms import EmailForm
 from flask_mail import Mail, Message
 import os
@@ -16,26 +16,22 @@ app.config.update(
 )
 mail = Mail(app)
 
-@app.route('/')
-def root():
-    return redirect(url_for('index'))
-
-@app.route('/data', methods=['GET','POST'])
+@app.route('/', methods=['GET','POST'])
 def index():
     form = EmailForm(request.form, csrf_enabled=False)
     if request.method == 'POST':
         if form.validate():
             try: 
-                to = request.form['to']
-                subject = request.form['subject']
-                body = request.form['body']
-                msg = Message(subject, sender=app.config['SENDER_EMAIL'], recipients=[to])
-                msg.body = body
+                ##if form validates, send email, return success
+                msg = Message(form.subject.data, sender=MAIL_USERNAME, recipients=[form.to.data])
+                msg.body = form.body.data
                 mail.send(msg)
                 flash('Your email message has been sent!')
-                return redirect(url_for('index'))
+                return jsonify({'Success': 1})
             except Exception as inst:
                 return(str(inst))
+        else:
+            return jsonify({'Failure': 0})
 
     return render_template('index.html', form=form)
 

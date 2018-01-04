@@ -1,0 +1,41 @@
+* {
+  box-sizing: border-box;
+}
+
+body {
+  margin: auto;
+  padding: 50px;
+  font-family: 'Montserrat', sans-serif;
+  color: white;
+  content: "";
+  background: url(https://i.imgur.com/FQrDo.jpg);
+  background-size: cover;
+  opacity: 0.7;
+  position: absolute;
+  z-index: -1;
+  width: 300px;
+}
+
+input[type=text] {
+  background-color:rgb(75, 70, 106);
+  font-size: 20px;
+  border-radius: 4px;
+  color: white;
+  font-family: 'Montserrat', sans-serif;
+}
+
+input, textarea, button {
+  width: 300px;
+}
+
+h1,
+p {
+  text-align: left;
+}
+
+button {
+  background-color: rgb(75, 94, 155);
+  font-size: 20px;
+  padding: 5px;
+  color: white;
+}
