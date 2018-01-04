@@ -9,7 +9,7 @@ def root():
 
 @app.route('/data')
 def index():
-    return "Hello this is the mailer!"
+    return render_template('index.html')
 
 if os.environ.get('ENV') == 'production':
     debug = False

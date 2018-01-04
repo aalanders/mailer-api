@@ -1,0 +1,12 @@
+{% extends 'base.html' %} 
+
+{% block content %}
+
+<form action="{{url_for('index')}}" method="POST">
+    To: <input type="to" name="to"> 
+    Subject:<input type="subject" name="subject"> 
+    Body: <input type="body" name="body">
+    <input type="submit" value="Send">
+</form>
+
+{% endblock %}
