@@ -26,11 +26,11 @@ def index():
                 msg.body = form.body.data
                 mail.send(msg)
                 flash('Your email message has been sent!')
-                return jsonify({'Success': 1})
+                return jsonify({'Successfully sent email': 1})
             except Exception as inst:
                 return(str(inst))
         else:
-            return jsonify({'Failure': 0})
+            return jsonify({'Failure to send email': 0})
 
     return render_template('index.html', form=form)
 
