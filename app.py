@@ -22,7 +22,7 @@ def index():
     if request.method == 'POST':
         if form.validate():
             try: 
-                msg = Message(form.subject.data, sender=MAIL_USERNAME, recipients=[form.to.data])
+                msg = Message(form.subject.data, sender=app.config['SENDER_EMAIL'], recipients=[form.to.data])
                 msg.body = form.body.data
                 mail.send(msg)
                 flash('Your email message has been sent!')
